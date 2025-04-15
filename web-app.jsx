@@ -42,6 +42,48 @@ function WebApp() {
   const getWeatherIcon = (iconCode) => {
     return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
   };
+  
+  // Função para escolher o gradiente de fundo com base no ID da condição climática
+  const getWeatherBackground = (conditionId) => {
+    if (!conditionId) return '';
+    
+    // Céu limpo
+    if (conditionId === 800) {
+      return 'var(--gradient-clear)';
+    }
+    
+    // Nublado ou parcialmente nublado
+    if (conditionId >= 801 && conditionId <= 804) {
+      return 'var(--gradient-cloudy)';
+    }
+    
+    // Tempestade
+    if (conditionId >= 200 && conditionId <= 232) {
+      return 'var(--gradient-night)';
+    }
+    
+    // Chuva
+    if ((conditionId >= 300 && conditionId <= 321) || (conditionId >= 500 && conditionId <= 531)) {
+      return 'var(--gradient-rain)';
+    }
+    
+    // Neve
+    if (conditionId >= 600 && conditionId <= 622) {
+      return 'linear-gradient(120deg, #E0EAFC, #CFDEF3)';
+    }
+    
+    // Neblina, fumaça, etc.
+    if (conditionId >= 700 && conditionId <= 781) {
+      return 'linear-gradient(120deg, #606c88, #3f4c6b)';
+    }
+    
+    return 'var(--gradient-blue)';
+  };
+  
+  // Aplicar a cor de fundo dinâmica ao weather card
+  const weatherCardStyle = weather ? {
+    background: getWeatherBackground(weather.weather[0]?.id)
+  } : {};
 
   return (
     <div className="container">
@@ -80,7 +122,7 @@ function WebApp() {
         </div>
       ) : weather ? (
         <div className="weather-container">
-          <div className="weather-card">
+          <div className="weather-card" style={weatherCardStyle}>
             <h2 className="city-name">{weather.name}, {weather.sys.country}</h2>
             
             <div className="weather-main">
