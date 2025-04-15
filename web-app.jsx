@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 
 // Acesso à chave de API do OpenWeather a partir do objeto ENV definido no HTML
 const apiKey = window.ENV?.OPENWEATHER_API_KEY || '';
@@ -12,6 +12,7 @@ const ALERT_TYPES = {
   FOG: 'Neblina',
   HIGH_WIND: 'Ventos Fortes',
   AIR_QUALITY: 'Qualidade do Ar',
+  UV_INDEX: 'Índice UV',
 };
 
 // Componente de Notificação
@@ -67,20 +68,140 @@ function Notification({ type, title, message, onClose, id }) {
   );
 }
 
+// Componente de previsão do dia
+function ForecastDay({ date, icon, tempMax, tempMin, condition }) {
+  const formatDate = (timestamp) => {
+    const days = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+    const d = new Date(timestamp * 1000);
+    return `${days[d.getDay()]}, ${d.getDate()}/${d.getMonth() + 1}`;
+  };
+
+  return (
+    <div className="forecast-day">
+      <div className="forecast-date">{formatDate(date)}</div>
+      <img 
+        src={`https://openweathermap.org/img/wn/${icon}@2x.png`}
+        alt={condition}
+        className="forecast-icon"
+        width="50"
+        height="50"
+      />
+      <div className="forecast-temp">
+        <div className="forecast-max">
+          <span className="forecast-max-label">Máx</span>
+          <span className="forecast-max-value">{Math.round(tempMax)}°</span>
+        </div>
+        <div className="forecast-min">
+          <span className="forecast-min-label">Mín</span>
+          <span className="forecast-min-value">{Math.round(tempMin)}°</span>
+        </div>
+      </div>
+      <div className="forecast-condition">{condition}</div>
+    </div>
+  );
+}
+
+// Componente AirQuality
+function AirQualityBadge({ aqi }) {
+  // Indicador de qualidade do ar (1-5)
+  // 1: Boa, 2: Razoável, 3: Moderada, 4: Ruim, 5: Muito Ruim
+  
+  // Valores simulados para demonstração - em produção usaria dados reais da API
+  const quality = aqi || 2;
+  
+  let badgeClass = 'badge-info';
+  let label = 'Boa';
+  
+  if (quality === 1) {
+    badgeClass = 'badge-success';
+    label = 'Boa';
+  } else if (quality === 2) {
+    badgeClass = 'badge-info';
+    label = 'Razoável';
+  } else if (quality === 3) {
+    badgeClass = 'badge-warning';
+    label = 'Moderada';
+  } else if (quality >= 4) {
+    badgeClass = 'badge-danger';
+    label = quality === 5 ? 'Muito Ruim' : 'Ruim';
+  }
+  
+  return (
+    <span className={`badge ${badgeClass}`}>
+      <span className="badge-icon">💨</span>
+      Qualidade do ar: {label}
+    </span>
+  );
+}
+
+// Componente UVIndex
+function UVIndexBadge({ uvi }) {
+  // Índice UV (0-11+)
+  // 0-2: Baixo, 3-5: Moderado, 6-7: Alto, 8-10: Muito Alto, 11+: Extremo
+  
+  // Valores simulados para demonstração - em produção usaria dados reais da API
+  const uvIndex = uvi || 4;
+  
+  let badgeClass = 'badge-info';
+  let label = 'Moderado';
+  
+  if (uvIndex <= 2) {
+    badgeClass = 'badge-success';
+    label = 'Baixo';
+  } else if (uvIndex <= 5) {
+    badgeClass = 'badge-info';
+    label = 'Moderado';
+  } else if (uvIndex <= 7) {
+    badgeClass = 'badge-warning';
+    label = 'Alto';
+  } else if (uvIndex <= 10) {
+    badgeClass = 'badge-danger';
+    label = 'Muito Alto';
+  } else {
+    badgeClass = 'badge-danger';
+    label = 'Extremo';
+  }
+  
+  return (
+    <span className={`badge ${badgeClass}`}>
+      <span className="badge-icon">☀️</span>
+      Índice UV: {label}
+    </span>
+  );
+}
+
 function WebApp() {
   const [city, setCity] = useState('São Paulo');
   const [weather, setWeather] = useState(null);
+  const [forecast, setForecast] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
   const [notifications, setNotifications] = useState([]);
+  const [activeTab, setActiveTab] = useState('hoje');
+  const [favorites, setFavorites] = useState(() => {
+    const saved = localStorage.getItem('weather-favorites');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [isFavorite, setIsFavorite] = useState(false);
 
+  // Efeito para verificar se a cidade atual está nos favoritos quando o clima muda
+  useEffect(() => {
+    if (weather && favorites.length > 0) {
+      const found = favorites.some(fav => fav.id === weather.id);
+      setIsFavorite(found);
+    } else {
+      setIsFavorite(false);
+    }
+  }, [weather, favorites]);
+  
   const fetchWeather = async () => {
     if (!city.trim()) return;
     
     try {
       setLoading(true);
       setError(null);
+      setForecast(null); // Limpa a previsão anterior
       
       const response = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=pt_br`
@@ -94,6 +215,11 @@ function WebApp() {
       
       const data = await response.json();
       setWeather(data);
+      
+      // Buscar previsão de 5 dias quando o clima estiver disponível
+      if (data && data.coord) {
+        fetchForecast(data.coord.lat, data.coord.lon);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Ocorreu um erro desconhecido');
     } finally {
@@ -241,6 +367,78 @@ function WebApp() {
     return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
   };
   
+  // Função para buscar previsão de 5 dias
+  const fetchForecast = async (lat, lon) => {
+    if (!lat || !lon) return;
+    
+    try {
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=pt_br`
+      );
+      
+      if (!response.ok) {
+        throw new Error('Erro ao buscar previsão. Tente novamente mais tarde.');
+      }
+      
+      const data = await response.json();
+      setForecast(data);
+      
+      // Verificar se tem alertas adicionais na previsão
+      checkForecastForAlerts(data);
+    } catch (err) {
+      console.error('Erro ao buscar previsão:', err);
+    }
+  };
+  
+  // Adicionar como favorito
+  const toggleFavorite = () => {
+    if (!weather) return;
+    
+    const cityId = weather.id;
+    const cityData = {
+      id: cityId,
+      name: weather.name,
+      country: weather.sys.country,
+      lat: weather.coord.lat,
+      lon: weather.coord.lon,
+    };
+    
+    let newFavorites = [...favorites];
+    
+    if (isFavorite) {
+      // Remover dos favoritos
+      newFavorites = newFavorites.filter(city => city.id !== cityId);
+      addNotification('info', 'Favorito removido', `${weather.name} foi removido dos favoritos.`);
+    } else {
+      // Adicionar aos favoritos
+      newFavorites.push(cityData);
+      addNotification('info', 'Favorito adicionado', `${weather.name} foi adicionado aos favoritos.`);
+    }
+    
+    setFavorites(newFavorites);
+    setIsFavorite(!isFavorite);
+    localStorage.setItem('weather-favorites', JSON.stringify(newFavorites));
+  };
+  
+  // Verificar alertas adicionais na previsão
+  const checkForecastForAlerts = (forecastData) => {
+    if (!forecastData || !forecastData.list || forecastData.list.length === 0) return;
+    
+    // Verifica se há tempestades nas próximas 24 horas
+    const next24Hours = forecastData.list.slice(0, 8); // 8 intervalos de 3 horas = 24 horas
+    
+    const hasStorm = next24Hours.some(item => item.weather[0].id >= 200 && item.weather[0].id < 300);
+    if (hasStorm) {
+      addNotification('warning', ALERT_TYPES.STORM, 'Alerta de tempestade nas próximas 24 horas! Fique atento às condições climáticas.');
+    }
+    
+    // Verifica se há chuva forte nas próximas 24 horas
+    const hasHeavyRain = next24Hours.some(item => item.weather[0].id >= 502 && item.weather[0].id < 600);
+    if (hasHeavyRain) {
+      addNotification('warning', ALERT_TYPES.HEAVY_RAIN, 'Alerta de chuva forte nas próximas 24 horas! Evite áreas com risco de alagamento.');
+    }
+  };
+  
   // Função para escolher o gradiente de fundo com base no ID da condição climática
   const getWeatherBackground = (conditionId) => {
     if (!conditionId) return '';
@@ -267,12 +465,12 @@ function WebApp() {
     
     // Neve
     if (conditionId >= 600 && conditionId <= 622) {
-      return 'linear-gradient(120deg, #E0EAFC, #CFDEF3)';
+      return 'var(--gradient-snow)';
     }
     
     // Neblina, fumaça, etc.
     if (conditionId >= 700 && conditionId <= 781) {
-      return 'linear-gradient(120deg, #606c88, #3f4c6b)';
+      return 'var(--gradient-fog)';
     }
     
     return 'var(--gradient-blue)';
@@ -282,6 +480,45 @@ function WebApp() {
   const weatherCardStyle = weather ? {
     background: getWeatherBackground(weather.weather[0]?.id)
   } : {};
+  
+  // Extrair a previsão diária (5 dias) do forecast
+  const dailyForecast = useMemo(() => {
+    if (!forecast || !forecast.list) return [];
+    
+    const days = {};
+    const now = new Date();
+    
+    // Agrupar por dia
+    forecast.list.forEach(item => {
+      const date = new Date(item.dt * 1000);
+      const day = date.toDateString();
+      
+      // Ignorar o dia atual
+      if (date.getDate() === now.getDate() && 
+          date.getMonth() === now.getMonth() && 
+          date.getFullYear() === now.getFullYear()) {
+        return;
+      }
+      
+      if (!days[day]) {
+        days[day] = {
+          dt: item.dt,
+          temp_min: item.main.temp_min,
+          temp_max: item.main.temp_max,
+          icon: item.weather[0].icon,
+          description: item.weather[0].description,
+          items: [item]
+        };
+      } else {
+        days[day].items.push(item);
+        days[day].temp_min = Math.min(days[day].temp_min, item.main.temp_min);
+        days[day].temp_max = Math.max(days[day].temp_max, item.main.temp_max);
+      }
+    });
+    
+    // Converter para array e limitar a 5 dias
+    return Object.values(days).slice(0, 5);
+  }, [forecast]);
 
   return (
     <div className="container" role="main">
@@ -355,49 +592,136 @@ function WebApp() {
         </div>
       ) : weather ? (
         <div className="weather-container" role="region" aria-label="Informações do clima">
-          <div className="weather-card" style={weatherCardStyle}>
-            <h2 className="city-name">{weather.name}, {weather.sys.country}</h2>
-            
-            <div className="weather-main">
-              <div className="temperature" aria-label={`Temperatura atual: ${Math.round(weather.main.temp)} graus Celsius`}>
-                {Math.round(weather.main.temp)}°C
+          {/* Tabs de navegação */}
+          <div className="tabs" role="tablist">
+            <button 
+              className={`tab ${activeTab === 'hoje' ? 'active' : ''}`} 
+              onClick={() => setActiveTab('hoje')}
+              role="tab"
+              aria-selected={activeTab === 'hoje'}
+              aria-controls="tab-hoje"
+              id="tab-button-hoje"
+            >
+              Hoje
+            </button>
+            <button 
+              className={`tab ${activeTab === 'previsao' ? 'active' : ''}`} 
+              onClick={() => setActiveTab('previsao')}
+              role="tab"
+              aria-selected={activeTab === 'previsao'}
+              aria-controls="tab-previsao"
+              id="tab-button-previsao"
+              disabled={!forecast}
+            >
+              Próximos Dias
+            </button>
+          </div>
+          
+          {/* Conteúdo da tab Hoje */}
+          <div 
+            id="tab-hoje" 
+            role="tabpanel" 
+            aria-labelledby="tab-button-hoje"
+            className={`tab-content ${activeTab === 'hoje' ? 'active' : ''}`}
+          >
+            <div className="weather-card" style={weatherCardStyle}>
+              <div className="city-header">
+                <h2 className="city-name">{weather.name}, {weather.sys.country}</h2>
+                <button 
+                  className="icon-button" 
+                  onClick={toggleFavorite}
+                  aria-label={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+                  title={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+                >
+                  {isFavorite ? "❤️" : "🤍"}
+                </button>
               </div>
-              <div className="weather-icon-container">
-                {weather.weather[0] && (
-                  <img 
-                    src={getWeatherIcon(weather.weather[0].icon)}
-                    alt={weather.weather[0].description}
-                    className="weather-icon"
-                    width="90"
-                    height="90"
-                  />
-                )}
-                <p className="weather-description">
-                  {weather.weather[0]?.description}
-                </p>
+              
+              <div className="weather-main">
+                <div className="temperature" aria-label={`Temperatura atual: ${Math.round(weather.main.temp)} graus Celsius`}>
+                  {Math.round(weather.main.temp)}°C
+                </div>
+                <div className="weather-icon-container">
+                  {weather.weather[0] && (
+                    <img 
+                      src={getWeatherIcon(weather.weather[0].icon)}
+                      alt={weather.weather[0].description}
+                      className="weather-icon"
+                      width="90"
+                      height="90"
+                    />
+                  )}
+                  <p className="weather-description">
+                    {weather.weather[0]?.description}
+                  </p>
+                </div>
+              </div>
+              
+              {/* Badges para qualidade do ar e UV */}
+              <div className="badges-container">
+                <AirQualityBadge aqi={2} /> {/* Valor simulado para demonstração */}
+                <UVIndexBadge uvi={4} />    {/* Valor simulado para demonstração */}
+              </div>
+              
+              <div className="weather-details" role="list">
+                <div className="weather-detail" role="listitem">
+                  <span className="weather-detail-label" id="feels-like-label">Sensação</span>
+                  <span className="weather-detail-value" aria-labelledby="feels-like-label">
+                    {Math.round(weather.main.feels_like)}°C
+                  </span>
+                </div>
+                
+                <div className="weather-detail" role="listitem">
+                  <span className="weather-detail-label" id="humidity-label">Umidade</span>
+                  <span className="weather-detail-value" aria-labelledby="humidity-label">
+                    {weather.main.humidity}%
+                  </span>
+                </div>
+                
+                <div className="weather-detail" role="listitem">
+                  <span className="weather-detail-label" id="wind-label">Vento</span>
+                  <span className="weather-detail-value" aria-labelledby="wind-label">
+                    {(weather.wind.speed * 3.6).toFixed(1)} km/h
+                  </span>
+                </div>
+                
+                <div className="weather-detail" role="listitem">
+                  <span className="weather-detail-label" id="pressure-label">Pressão</span>
+                  <span className="weather-detail-value" aria-labelledby="pressure-label">
+                    {weather.main.pressure} hPa
+                  </span>
+                </div>
               </div>
             </div>
-            
-            <div className="weather-details" role="list">
-              <div className="weather-detail" role="listitem">
-                <span className="weather-detail-label" id="feels-like-label">Sensação</span>
-                <span className="weather-detail-value" aria-labelledby="feels-like-label">
-                  {Math.round(weather.main.feels_like)}°C
-                </span>
-              </div>
-              
-              <div className="weather-detail" role="listitem">
-                <span className="weather-detail-label" id="humidity-label">Umidade</span>
-                <span className="weather-detail-value" aria-labelledby="humidity-label">
-                  {weather.main.humidity}%
-                </span>
-              </div>
-              
-              <div className="weather-detail" role="listitem">
-                <span className="weather-detail-label" id="wind-label">Vento</span>
-                <span className="weather-detail-value" aria-labelledby="wind-label">
-                  {(weather.wind.speed * 3.6).toFixed(1)} km/h
-                </span>
+          </div>
+          
+          {/* Conteúdo da tab Previsão */}
+          <div 
+            id="tab-previsao" 
+            role="tabpanel" 
+            aria-labelledby="tab-button-previsao"
+            className={`tab-content ${activeTab === 'previsao' ? 'active' : ''}`}
+          >
+            <div className="glass-card">
+              <div className="forecast-container">
+                <h3 className="forecast-title">Previsão para 5 dias</h3>
+                
+                <div className="daily-forecast">
+                  {dailyForecast.length > 0 ? (
+                    dailyForecast.map((day, index) => (
+                      <ForecastDay
+                        key={index}
+                        date={day.dt}
+                        icon={day.icon}
+                        tempMax={day.temp_max}
+                        tempMin={day.temp_min}
+                        condition={day.description}
+                      />
+                    ))
+                  ) : (
+                    <p>Carregando previsão...</p>
+                  )}
+                </div>
               </div>
             </div>
           </div>

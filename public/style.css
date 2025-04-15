@@ -1,66 +1,165 @@
-/* Definindo variáveis para paleta de cores */
+/* Definindo variáveis para paleta de cores - Versão Premium */
 :root {
-  /* Modo Claro */
-  --primary-color: #3498db;
-  --primary-dark: #2980b9;
-  --primary-light: #5dade2;
-  --accent-color: #f39c12;
-  --text-dark: #2C3E50;
-  --text-light: #7F8C8D;
-  --background-light: #f5f7fa;
+  /* Cores base - Esquema Premium */
+  --primary-color: #4361ee;
+  --primary-dark: #3f37c9;
+  --primary-light: #4cc9f0;
+  --accent-color: #f72585;
+  --secondary-color: #7209b7;
+  --text-dark: #111827;
+  --text-light: #6b7280;
+  --background-light: #f9fafb;
   --card-background: #ffffff;
-  --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  --gradient-blue: linear-gradient(120deg, #3498db, #2980b9);
-  --gradient-sunset: linear-gradient(120deg, #f39c12, #e74c3c);
-  --gradient-clear: linear-gradient(120deg, #3498db, #5dade2);
-  --gradient-night: linear-gradient(120deg, #2c3e50, #34495e);
-  --gradient-cloudy: linear-gradient(120deg, #7f8c8d, #95a5a6);
-  --gradient-rain: linear-gradient(120deg, #3498db, #2c3e50);
+  
+  /* Efeitos e sombras premium */
+  --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  --premium-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --frosted-glass: rgba(255, 255, 255, 0.8);
+  --frosted-glass-dark: rgba(30, 41, 59, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  
+  /* Gradientes premium */
+  --gradient-blue: linear-gradient(135deg, #4361ee, #4cc9f0);
+  --gradient-violet: linear-gradient(135deg, #7209b7, #560bad);
+  --gradient-sunset: linear-gradient(135deg, #f72585, #b5179e);
+  --gradient-clear: linear-gradient(135deg, #48bfe3, #56cfe1);
+  --gradient-night: linear-gradient(135deg, #0d1b2a, #1b263b);
+  --gradient-cloudy: linear-gradient(135deg, #a8dadc, #457b9d);
+  --gradient-rain: linear-gradient(135deg, #023e8a, #0077b6);
+  --gradient-sunrise: linear-gradient(135deg, #f9c74f, #f8961e);
+  --gradient-snow: linear-gradient(135deg, #e0fbfc, #c2dfe3);
+  --gradient-fog: linear-gradient(135deg, #8d99ae, #edf2f4);
+  
+  /* Status colors */
+  --success-color: #10b981;
+  --error-color: #ef4444;
+  --warning-color: #f59e0b;
+  --info-color: #3b82f6;
   
   /* Cores para bordas e elementos */
-  --border-color: rgba(0, 0, 0, 0.1);
+  --border-color: rgba(0, 0, 0, 0.08);
   --input-background: #ffffff;
-  --loading-background: rgba(52, 152, 219, 0.1);
+  --loading-background: rgba(67, 97, 238, 0.1);
   --card-shimmer: rgba(255, 255, 255, 0.2);
+  
+  /* Cores para gráficos */
+  --chart-grid: rgba(107, 114, 128, 0.2);
+  --chart-temp-high: #ef4444;
+  --chart-temp-low: #3b82f6;
+  --chart-precip: #60a5fa;
+  --chart-wind: #a3e635;
+  --chart-uv: #f59e0b;
 }
 
-/* Modo Escuro */
-[data-theme="dark"] {
-  --primary-color: #4fc3f7;
-  --primary-dark: #0288d1;
-  --primary-light: #81d4fa;
-  --accent-color: #ffb74d;
-  --text-dark: #ecf0f1;
-  --text-light: #bdc3c7;
-  --background-light: #1a1a2e;
-  --card-background: #16213e;
-  --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-  --gradient-blue: linear-gradient(120deg, #0d47a1, #0277bd);
-  --gradient-sunset: linear-gradient(120deg, #e65100, #bf360c);
-  --gradient-clear: linear-gradient(120deg, #01579b, #039be5);
-  --gradient-night: linear-gradient(120deg, #263238, #37474f);
-  --gradient-cloudy: linear-gradient(120deg, #455a64, #607d8b);
-  --gradient-rain: linear-gradient(120deg, #0277bd, #01579b);
+/* Modo Escuro Premium */
+html[data-theme="dark"], body.dark-mode {
+  --primary-color: #4cc9f0;
+  --primary-dark: #4361ee;
+  --primary-light: #80ffdb;
+  --accent-color: #f72585;
+  --secondary-color: #7209b7;
+  --text-dark: #f1f5f9;
+  --text-light: #94a3b8;
+  --background-light: #0f172a;
+  --card-background: #1e293b;
+  
+  /* Efeitos e sombras para modo escuro */
+  --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+  --premium-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  --frosted-glass: rgba(30, 41, 59, 0.8);
+  --frosted-glass-dark: rgba(15, 23, 42, 0.9);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  
+  /* Gradientes modo escuro */
+  --gradient-blue: linear-gradient(135deg, #4cc9f0, #3a86ff);
+  --gradient-violet: linear-gradient(135deg, #7209b7, #560bad);
+  --gradient-sunset: linear-gradient(135deg, #f72585, #b5179e);
+  --gradient-clear: linear-gradient(135deg, #023e8a, #0077b6);
+  --gradient-night: linear-gradient(135deg, #03071e, #0f172a);
+  --gradient-cloudy: linear-gradient(135deg, #4a5568, #2d3748);
+  --gradient-rain: linear-gradient(135deg, #023e8a, #0077b6);
   
   /* Cores para bordas e elementos */
   --border-color: rgba(255, 255, 255, 0.1);
-  --input-background: #0f3460;
-  --loading-background: rgba(79, 195, 247, 0.1);
+  --input-background: #0f172a;
+  --loading-background: rgba(76, 201, 240, 0.1);
   --card-shimmer: rgba(255, 255, 255, 0.05);
+  
+  /* Cores para gráficos - modo escuro */
+  --chart-grid: rgba(148, 163, 184, 0.2);
+  --chart-temp-high: #f87171;
+  --chart-temp-low: #60a5fa;
+  --chart-precip: #7dd3fc;
+  --chart-wind: #bef264;
+  --chart-uv: #fbbf24;
 }
 
 body {
-  background-image: linear-gradient(180deg, #f5f7fa 0%, #e8ecf1 100%);
+  background-image: linear-gradient(135deg, #f9fafb 0%, #e2e8f0 100%);
   margin: 0;
   padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   transition: all 0.5s ease;
   color: var(--text-dark);
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  right: -10%;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--primary-light) 0%, rgba(255,255,255,0) 70%);
+  opacity: 0.3;
+  z-index: -1;
+  animation: floatBubble 15s ease-in-out infinite alternate;
+}
+
+body::after {
+  content: '';
+  position: absolute;
+  bottom: -10%;
+  left: -10%;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-color) 0%, rgba(255,255,255,0) 70%);
+  opacity: 0.2;
+  z-index: -1;
+  animation: floatBubble2 20s ease-in-out infinite alternate;
+}
+
+@keyframes floatBubble {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(10%, 10%); }
+}
+
+@keyframes floatBubble2 {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-10%, -10%); }
 }
 
 html[data-theme="dark"] body,
 body.dark-mode {
-  background-image: linear-gradient(180deg, #1a1a2e 0%, #0f3460 100%);
+  background-image: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
   color: var(--text-dark);
+}
+
+html[data-theme="dark"] body::before,
+body.dark-mode::before {
+  background: radial-gradient(circle, var(--secondary-color) 0%, rgba(255,255,255,0) 70%);
+  opacity: 0.2;
+}
+
+html[data-theme="dark"] body::after,
+body.dark-mode::after {
+  background: radial-gradient(circle, var(--primary-dark) 0%, rgba(255,255,255,0) 70%);
+  opacity: 0.15;
 }
 
 /* Ajuste de cores para o dark mode */
@@ -813,6 +912,250 @@ body.dark-mode .footer {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
+/* Componentes premium adicionais */
+
+/* Elementos de vidro (Glassmorphism) */
+.glass-card {
+  background: var(--frosted-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: 20px;
+  transition: all 0.4s ease;
+}
+
+html[data-theme="dark"] .glass-card,
+body.dark-mode .glass-card {
+  background: var(--frosted-glass-dark);
+}
+
+/* Tabs para navegação */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 20px;
+}
+
+.tab {
+  padding: 12px 20px;
+  font-weight: 600;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  background: transparent;
+  border: none;
+  font-size: 15px;
+}
+
+.tab.active {
+  color: var(--primary-color);
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--primary-color);
+  border-radius: 3px 3px 0 0;
+}
+
+.tab:hover:not(.active) {
+  color: var(--text-dark);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+html[data-theme="dark"] .tab:hover:not(.active),
+body.dark-mode .tab:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Previsão para 5 dias */
+.forecast-container {
+  margin-top: 30px;
+  padding: 20px 0;
+  border-top: 1px solid var(--border-color);
+}
+
+.forecast-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--text-dark);
+  position: relative;
+  display: inline-block;
+}
+
+.forecast-title::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background: var(--primary-color);
+  border-radius: 2px;
+}
+
+.daily-forecast {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.forecast-day {
+  background: var(--card-background);
+  border-radius: 16px;
+  padding: 15px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.forecast-day:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary-light);
+  box-shadow: var(--premium-shadow);
+}
+
+.forecast-date {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+}
+
+.forecast-icon {
+  width: 50px;
+  height: 50px;
+  margin: 5px 0;
+  filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.1));
+}
+
+.forecast-temp {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.forecast-max, .forecast-min {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.forecast-max-label, .forecast-min-label {
+  font-size: 11px;
+  color: var(--text-light);
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.forecast-max-value {
+  font-weight: 600;
+  color: var(--chart-temp-high);
+}
+
+.forecast-min-value {
+  font-weight: 600;
+  color: var(--chart-temp-low);
+}
+
+.forecast-condition {
+  font-size: 13px;
+  color: var(--text-light);
+  text-align: center;
+  margin-top: 8px;
+  text-transform: capitalize;
+}
+
+/* Chart para temperatura */
+.chart-container {
+  margin-top: 30px;
+  background: var(--card-background);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: var(--card-shadow);
+  height: 250px;
+  position: relative;
+}
+
+.chart-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: var(--text-dark);
+}
+
+/* Botões com ícones */
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--card-background);
+  border: 1px solid var(--border-color);
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--card-shadow);
+}
+
+.icon-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--premium-shadow);
+  background: var(--primary-light);
+  color: white;
+}
+
+/* Badges para qualidade do ar e UV */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.badge-success {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: var(--success-color);
+}
+
+.badge-warning {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: var(--warning-color);
+}
+
+.badge-danger {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--error-color);
+}
+
+.badge-info {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: var(--info-color);
+}
+
+.badge-icon {
+  margin-right: 5px;
+  font-size: 14px;
+}
+
 /* Melhorias de acessibilidade */
 .sr-only {
   position: absolute;
@@ -839,7 +1182,7 @@ body.dark-mode .footer {
 :focus-visible {
   outline: 2px solid var(--primary-color);
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.2);
+  box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.2);
 }
 
 /* Adiciona suporte a prefers-reduced-motion */
@@ -850,6 +1193,30 @@ body.dark-mode .footer {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Componentes premium extras */
+.city-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.badges-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* Conteúdo das abas */
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
 }
 
 /* Adapte o estilo para telas menores */
