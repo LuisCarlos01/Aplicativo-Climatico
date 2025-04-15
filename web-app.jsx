@@ -1,0 +1,133 @@
+import React, { useEffect, useState } from 'react';
+
+// Acesso à chave de API do OpenWeather a partir do objeto ENV definido no HTML
+const apiKey = window.ENV?.OPENWEATHER_API_KEY || process.env.OPENWEATHER_API_KEY || '';
+
+function WebApp() {
+  const [city, setCity] = useState('São Paulo');
+  const [weather, setWeather] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const fetchWeather = async () => {
+    if (!city.trim()) return;
+    
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=pt_br`
+      );
+      
+      if (!response.ok) {
+        throw new Error(response.status === 404 
+          ? 'Cidade não encontrada. Verifique o nome e tente novamente.' 
+          : 'Erro ao buscar dados do clima. Tente novamente mais tarde.');
+      }
+      
+      const data = await response.json();
+      setWeather(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Ocorreu um erro desconhecido');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchWeather();
+  }, []);
+
+  const getWeatherIcon = (iconCode) => {
+    return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+  };
+
+  return (
+    <div className="container">
+      <div className="header">
+        <h1 className="title">AppClima</h1>
+        <p className="subtitle">Previsão do Tempo</p>
+      </div>
+      
+      <div className="search-container">
+        <input
+          className="input"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          placeholder="Digite o nome da cidade"
+        />
+        <button 
+          className="button"
+          onClick={fetchWeather}
+          disabled={loading}
+        >
+          Buscar
+        </button>
+      </div>
+      
+      {loading ? (
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <p className="loading-text">Carregando informações do clima...</p>
+        </div>
+      ) : error ? (
+        <div className="error-container">
+          <p className="error-text">{error}</p>
+          <button className="retry-button" onClick={fetchWeather}>
+            Tentar Novamente
+          </button>
+        </div>
+      ) : weather ? (
+        <div className="weather-container">
+          <div className="weather-card">
+            <h2 className="city-name">{weather.name}, {weather.sys.country}</h2>
+            
+            <div className="weather-main">
+              <div className="temperature">{Math.round(weather.main.temp)}°C</div>
+              <div className="weather-icon-container">
+                {weather.weather[0] && (
+                  <img 
+                    src={getWeatherIcon(weather.weather[0].icon)}
+                    alt={weather.weather[0].description}
+                    className="weather-icon"
+                  />
+                )}
+                <p className="weather-description">
+                  {weather.weather[0]?.description}
+                </p>
+              </div>
+            </div>
+            
+            <div className="weather-details">
+              <div className="weather-detail">
+                <span className="weather-detail-label">Sensação</span>
+                <span className="weather-detail-value">{Math.round(weather.main.feels_like)}°C</span>
+              </div>
+              
+              <div className="weather-detail">
+                <span className="weather-detail-label">Umidade</span>
+                <span className="weather-detail-value">{weather.main.humidity}%</span>
+              </div>
+              
+              <div className="weather-detail">
+                <span className="weather-detail-label">Vento</span>
+                <span className="weather-detail-value">{(weather.wind.speed * 3.6).toFixed(1)} km/h</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="no-data-container">
+          <p className="no-data-text">Busque por uma cidade para ver a previsão do tempo.</p>
+        </div>
+      )}
+      
+      <div className="footer">
+        <p className="footer-text">© 2025 AppClima - Todos os direitos reservados</p>
+      </div>
+    </div>
+  );
+}
+
+export default WebApp;

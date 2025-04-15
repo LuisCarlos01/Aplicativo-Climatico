@@ -2,11 +2,16 @@
  * Web entry point for AppClima
  */
 
-import { AppRegistry } from 'react-native';
-import App from './App';
-import { name as appName } from './app.json';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import WebApp from './web-app';
 
-AppRegistry.registerComponent(appName, () => App);
-AppRegistry.runApplication(appName, {
-  rootTag: document.getElementById('root')
-});
+// Disponibilizando a API key do .env para o cliente
+if (window.ENV && window.ENV.OPENWEATHER_API_KEY) {
+  process.env.OPENWEATHER_API_KEY = window.ENV.OPENWEATHER_API_KEY;
+}
+
+// Usando React 18 createRoot API para renderizar o componente
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(<WebApp />);
