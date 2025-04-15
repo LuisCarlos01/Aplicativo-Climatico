@@ -1,0 +1,78 @@
+/* Estilos para os ícones premium */
+.premium-icon {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+.weather-icon-container:hover .premium-icon {
+  transform: scale(1.05);
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.15));
+}
+
+/* Estilos específicos para cada tipo de ícone */
+.premium-icon.sun-icon {
+  filter: drop-shadow(0 0 10px rgba(255, 173, 15, 0.4));
+}
+
+.premium-icon.moon-icon {
+  filter: drop-shadow(0 0 10px rgba(240, 230, 140, 0.3));
+}
+
+.premium-icon.partly-cloudy-day,
+.premium-icon.partly-cloudy-night {
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+}
+
+.premium-icon.cloudy,
+.premium-icon.cloudy-night,
+.premium-icon.broken-clouds,
+.premium-icon.broken-clouds-night {
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.premium-icon.rain,
+.premium-icon.rain-night,
+.premium-icon.light-rain,
+.premium-icon.light-rain-night {
+  filter: drop-shadow(0 4px 8px rgba(59, 130, 246, 0.3));
+}
+
+.premium-icon.thunderstorm,
+.premium-icon.thunderstorm-night {
+  filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
+}
+
+.premium-icon.snow,
+.premium-icon.snow-night {
+  filter: drop-shadow(0 4px 8px rgba(255, 255, 255, 0.5));
+}
+
+.premium-icon.mist,
+.premium-icon.mist-night {
+  filter: drop-shadow(0 4px 8px rgba(176, 196, 222, 0.4));
+}
+
+/* Animação para o hover nos ícones */
+@keyframes pulseIcon {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.weather-icon-container:hover .premium-icon {
+  animation: pulseIcon 2s ease-in-out infinite;
+}
+
+/* Suporte a prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .premium-icon,
+  .premium-icon * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

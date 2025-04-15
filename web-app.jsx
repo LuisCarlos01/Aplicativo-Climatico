@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import weatherIcons from './public/weather-icons';
 
 // Acesso à chave de API do OpenWeather a partir do objeto ENV definido no HTML
 const apiKey = window.ENV?.OPENWEATHER_API_KEY || '';
@@ -76,16 +77,23 @@ function ForecastDay({ date, icon, tempMax, tempMin, condition }) {
     return `${days[d.getDay()]}, ${d.getDate()}/${d.getMonth() + 1}`;
   };
 
+  // Verificar se temos o ícone SVG premium para este código
+  const iconSrc = weatherIcons[icon] 
+    ? `data:image/svg+xml;utf8,${encodeURIComponent(weatherIcons[icon])}` 
+    : `https://openweathermap.org/img/wn/${icon}@2x.png`;
+
   return (
     <div className="forecast-day">
       <div className="forecast-date">{formatDate(date)}</div>
-      <img 
-        src={`https://openweathermap.org/img/wn/${icon}@2x.png`}
-        alt={condition}
-        className="forecast-icon"
-        width="50"
-        height="50"
-      />
+      <div className="forecast-icon-container">
+        <img 
+          src={iconSrc}
+          alt={condition}
+          className="forecast-icon"
+          width="50"
+          height="50"
+        />
+      </div>
       <div className="forecast-temp">
         <div className="forecast-max">
           <span className="forecast-max-label">Máx</span>
@@ -128,7 +136,19 @@ function AirQualityBadge({ aqi }) {
   
   return (
     <span className={`badge ${badgeClass}`}>
-      <span className="badge-icon">💨</span>
+      <span className="badge-icon">
+        <svg viewBox="0 0 24 24" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="airGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#90CAF9" />
+              <stop offset="100%" stopColor="#2196F3" />
+            </linearGradient>
+          </defs>
+          <path d="M12.5,2C9.85,2 7.45,3 5.6,4.6C2.62,7.15 1.25,10.67 2.04,14.56C2.38,16.18 3.19,17.6 4.5,18.67C5.28,19.33 6.19,19.87 7.29,20.29C8.39,20.71 9.89,21 11.77,21C12.69,21 13.55,20.85 14.43,20.6C15.37,20.33 16.2,19.97 16.95,19.5C17.96,18.87 18.79,18.09 19.42,17.15C20.09,16.17 20.51,15.04 20.7,13.81C20.91,12.5 20.87,11.18 20.58,9.91C20.3,8.67 19.68,7.45 18.77,6.35C17.76,5.1 16.26,4.09 14.56,3.5C13.76,3.23 13.11,3.07 12.5,3V2M12.5,4C13,4.05 14,4.27 15,5C15.2,5.13 16,5.72 16.74,6.84C17.43,7.87 17.74,9.34 17.75,11.25C17.76,13.26 17.05,17 13.15,17.95C11.8,18.33 11.22,18.29 10.42,18.14C9.63,17.96 8.7,17.55 7.9,16.84C6.67,15.77 6.07,14.23 6,11.5C5.97,9.72 6.45,8.25 7.47,7.17C8.5,6.09 9.83,5.5 11.05,5.25C11.2,5.22 11.88,5.04 12.62,5C12.65,5 12.55,5 12.5,4L12.5,4Z" fill="url(#airGradient)">
+            <animate attributeName="opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite" />
+          </path>
+        </svg>
+      </span>
       Qualidade do ar: {label}
     </span>
   );
@@ -164,7 +184,45 @@ function UVIndexBadge({ uvi }) {
   
   return (
     <span className={`badge ${badgeClass}`}>
-      <span className="badge-icon">☀️</span>
+      <span className="badge-icon">
+        <svg viewBox="0 0 24 24" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="uvGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#FFD54F" />
+              <stop offset="100%" stopColor="#FF9800" />
+            </linearGradient>
+          </defs>
+          <circle cx="12" cy="12" r="5" fill="url(#uvGradient)">
+            <animate attributeName="opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite" />
+          </circle>
+          <g fill="none" stroke="url(#uvGradient)" strokeWidth="1.5">
+            <path d="M12 4V2">
+              <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite" />
+            </path>
+            <path d="M12 22V20">
+              <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite" />
+            </path>
+            <path d="M4 12H2">
+              <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite" />
+            </path>
+            <path d="M22 12H20">
+              <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite" />
+            </path>
+            <path d="M6.34 6.34L4.93 4.93">
+              <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite" />
+            </path>
+            <path d="M19.07 19.07L17.66 17.66">
+              <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite" />
+            </path>
+            <path d="M6.34 17.66L4.93 19.07">
+              <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite" />
+            </path>
+            <path d="M19.07 4.93L17.66 6.34">
+              <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite" />
+            </path>
+          </g>
+        </svg>
+      </span>
       Índice UV: {label}
     </span>
   );
@@ -364,6 +422,12 @@ function WebApp() {
   };
 
   const getWeatherIcon = (iconCode) => {
+    // Verificar se temos o ícone SVG premium para este código
+    if (weatherIcons[iconCode]) {
+      // Retorna a representação SVG como string HTML
+      return `data:image/svg+xml;utf8,${encodeURIComponent(weatherIcons[iconCode])}`;
+    }
+    // Fallback para ícones padrão do OpenWeather
     return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
   };
   
