@@ -126,7 +126,7 @@ Este projeto está licenciado sob a licença MIT - consulte o arquivo [LICENSE](
 
 ## 👨‍💻 Autor
 
-Desenvolvido por [Seu Nome](https://github.com/seu-usuario)
+Desenvolvido por [Luis Carlos](https://github.com/LuisCarlos01/Appclima)
 
 ## 🙏 Créditos
 

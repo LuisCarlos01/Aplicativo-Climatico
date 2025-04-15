@@ -689,6 +689,169 @@ body.dark-mode .footer {
   transform: translateY(0);
 }
 
+/* Sistema de notificações de alertas */
+.notification-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  width: 350px;
+  max-width: calc(100% - 40px);
+}
+
+.notification {
+  background-color: var(--card-background);
+  border-left: 5px solid var(--primary-color);
+  box-shadow: var(--card-shadow);
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 10px;
+  position: relative;
+  transition: all 0.3s ease;
+  animation: slideInRight 0.5s ease forwards;
+  display: flex;
+  align-items: flex-start;
+}
+
+.notification.alert {
+  border-left-color: #e74c3c;
+}
+
+.notification.warning {
+  border-left-color: #f39c12;
+}
+
+.notification.info {
+  border-left-color: var(--primary-color);
+}
+
+@keyframes slideInRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.notification.exit {
+  animation: slideOutRight 0.5s ease forwards;
+}
+
+.notification-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-icon.alert {
+  color: #e74c3c;
+}
+
+.notification-icon.warning {
+  color: #f39c12;
+}
+
+.notification-icon.info {
+  color: var(--primary-color);
+}
+
+.notification-content {
+  flex-grow: 1;
+}
+
+.notification-title {
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 4px;
+  color: var(--text-dark);
+}
+
+.notification-message {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text-light);
+}
+
+.notification-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--text-light);
+  transition: all 0.2s ease;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.notification-close:hover {
+  color: var(--text-dark);
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Melhorias de acessibilidade */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Foco melhorado para navegação por teclado */
+:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.2);
+}
+
+/* Adiciona suporte a prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* Adapte o estilo para telas menores */
 @media (max-width: 768px) {
   .container {
@@ -721,5 +884,11 @@ body.dark-mode .footer {
   .theme-toggle {
     top: 5px;
     right: 5px;
+  }
+  
+  .notification-container {
+    top: 10px;
+    right: 10px;
+    width: calc(100% - 20px);
   }
 }
