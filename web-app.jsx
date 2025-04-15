@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 // Acesso à chave de API do OpenWeather a partir do objeto ENV definido no HTML
-const apiKey = window.ENV?.OPENWEATHER_API_KEY || process.env.OPENWEATHER_API_KEY || '';
+const apiKey = window.ENV?.OPENWEATHER_API_KEY || '';
 
 function WebApp() {
   const [city, setCity] = useState('São Paulo');
