@@ -8,6 +8,7 @@ function WebApp() {
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [darkMode, setDarkMode] = useState(false);
 
   const fetchWeather = async () => {
     if (!city.trim()) return;
@@ -37,7 +38,26 @@ function WebApp() {
 
   useEffect(() => {
     fetchWeather();
+    
+    // Verifica se há preferência de tema salva
+    const savedTheme = localStorage.getItem('app-clima-theme');
+    if (savedTheme === 'dark') {
+      setDarkMode(true);
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
   }, []);
+  
+  // Função para alternar entre modo claro e escuro
+  const toggleDarkMode = () => {
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
+    
+    // Salva a preferência do usuário
+    localStorage.setItem('app-clima-theme', newDarkMode ? 'dark' : 'light');
+    
+    // Aplica o tema a toda a página
+    document.documentElement.setAttribute('data-theme', newDarkMode ? 'dark' : 'light');
+  };
 
   const getWeatherIcon = (iconCode) => {
     return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
@@ -87,6 +107,17 @@ function WebApp() {
 
   return (
     <div className="container">
+      {/* Botão de alternar tema */}
+      <div 
+        className={`theme-toggle ${darkMode ? 'dark' : ''}`}
+        onClick={toggleDarkMode}
+        title={darkMode ? 'Mudar para modo claro' : 'Mudar para modo escuro'}
+      >
+        <span className="theme-toggle-icon sun">☀️</span>
+        <span className="theme-toggle-icon moon">🌙</span>
+        <div className="theme-toggle-slider"></div>
+      </div>
+    
       <div className="header">
         <h1 className="title">AppClima</h1>
         <p className="subtitle">Previsão do Tempo</p>

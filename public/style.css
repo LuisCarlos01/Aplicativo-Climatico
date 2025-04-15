@@ -1,5 +1,6 @@
 /* Definindo variáveis para paleta de cores */
 :root {
+  /* Modo Claro */
   --primary-color: #3498db;
   --primary-dark: #2980b9;
   --primary-light: #5dade2;
@@ -15,13 +16,48 @@
   --gradient-night: linear-gradient(120deg, #2c3e50, #34495e);
   --gradient-cloudy: linear-gradient(120deg, #7f8c8d, #95a5a6);
   --gradient-rain: linear-gradient(120deg, #3498db, #2c3e50);
+  
+  /* Cores para bordas e elementos */
+  --border-color: rgba(0, 0, 0, 0.1);
+  --input-background: #ffffff;
+  --loading-background: rgba(52, 152, 219, 0.1);
+  --card-shimmer: rgba(255, 255, 255, 0.2);
+}
+
+/* Modo Escuro */
+[data-theme="dark"] {
+  --primary-color: #4fc3f7;
+  --primary-dark: #0288d1;
+  --primary-light: #81d4fa;
+  --accent-color: #ffb74d;
+  --text-dark: #ecf0f1;
+  --text-light: #bdc3c7;
+  --background-light: #1a1a2e;
+  --card-background: #16213e;
+  --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  --gradient-blue: linear-gradient(120deg, #0d47a1, #0277bd);
+  --gradient-sunset: linear-gradient(120deg, #e65100, #bf360c);
+  --gradient-clear: linear-gradient(120deg, #01579b, #039be5);
+  --gradient-night: linear-gradient(120deg, #263238, #37474f);
+  --gradient-cloudy: linear-gradient(120deg, #455a64, #607d8b);
+  --gradient-rain: linear-gradient(120deg, #0277bd, #01579b);
+  
+  /* Cores para bordas e elementos */
+  --border-color: rgba(255, 255, 255, 0.1);
+  --input-background: #0f3460;
+  --loading-background: rgba(79, 195, 247, 0.1);
+  --card-shimmer: rgba(255, 255, 255, 0.05);
 }
 
 body {
   background-image: linear-gradient(180deg, #f5f7fa 0%, #e8ecf1 100%);
   margin: 0;
   padding: 0;
-  transition: background-image 1s ease;
+  transition: all 0.5s ease;
+}
+
+[data-theme="dark"] body {
+  background-image: linear-gradient(180deg, #1a1a2e 0%, #0f3460 100%);
 }
 
 .container {
@@ -549,6 +585,76 @@ body {
   transform: translateY(-2px);
 }
 
+/* Botão de alternar tema (dark mode) */
+.theme-toggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 50px;
+  height: 30px;
+  background-color: var(--card-background);
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5px;
+  cursor: pointer;
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  z-index: 10;
+  user-select: none;
+}
+
+.theme-toggle.dark {
+  background-color: var(--primary-dark);
+}
+
+.theme-toggle-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  color: var(--text-dark);
+  z-index: 2;
+}
+
+.theme-toggle-icon.sun {
+  color: #f39c12;
+}
+
+.theme-toggle-icon.moon {
+  color: #f1c40f;
+}
+
+.theme-toggle-slider {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  left: 3px;
+}
+
+.theme-toggle.dark .theme-toggle-slider {
+  left: 23px;
+  background-color: #16213e;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.theme-toggle:active {
+  transform: translateY(0);
+}
+
 /* Adapte o estilo para telas menores */
 @media (max-width: 768px) {
   .container {
@@ -576,5 +682,10 @@ body {
   
   .weather-detail {
     flex: 1 0 30%;
+  }
+  
+  .theme-toggle {
+    top: 5px;
+    right: 5px;
   }
 }
