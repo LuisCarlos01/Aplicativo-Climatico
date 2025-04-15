@@ -44,6 +44,10 @@ function WebApp() {
     if (savedTheme === 'dark') {
       setDarkMode(true);
       document.documentElement.setAttribute('data-theme', 'dark');
+      document.body.classList.add('dark-mode');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      document.body.classList.remove('dark-mode');
     }
   }, []);
   
@@ -55,8 +59,14 @@ function WebApp() {
     // Salva a preferência do usuário
     localStorage.setItem('app-clima-theme', newDarkMode ? 'dark' : 'light');
     
-    // Aplica o tema a toda a página
+    // Aplica o tema a toda a página - HTML e body
     document.documentElement.setAttribute('data-theme', newDarkMode ? 'dark' : 'light');
+    
+    if (newDarkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
   };
 
   const getWeatherIcon = (iconCode) => {

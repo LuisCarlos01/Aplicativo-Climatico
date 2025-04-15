@@ -54,10 +54,25 @@ body {
   margin: 0;
   padding: 0;
   transition: all 0.5s ease;
+  color: var(--text-dark);
 }
 
-[data-theme="dark"] body {
+html[data-theme="dark"] body,
+body.dark-mode {
   background-image: linear-gradient(180deg, #1a1a2e 0%, #0f3460 100%);
+  color: var(--text-dark);
+}
+
+/* Ajuste de cores para o dark mode */
+html[data-theme="dark"] .container,
+.dark-mode .container {
+  color: var(--text-dark);
+}
+
+/* Garante que as transições sejam suaves */
+html, body, .container, .weather-card, .input, .button,
+.weather-detail, .theme-toggle, .title, .subtitle, .footer-text {
+  transition: all 0.3s ease;
 }
 
 .container {
@@ -140,12 +155,26 @@ body {
 
 .input:focus {
   outline: none;
-  background-color: #fcfcfc;
+  background-color: var(--card-background);
+  box-shadow: inset 0 0 0 2px var(--primary-color);
 }
 
 .input::placeholder {
-  color: #bdc3c7;
+  color: var(--text-light);
+  opacity: 0.7;
   font-weight: 400;
+}
+
+/* Ajustes específicos para o modo escuro */
+html[data-theme="dark"] .input,
+body.dark-mode .input {
+  border: 1px solid var(--border-color);
+}
+
+html[data-theme="dark"] .input:focus,
+body.dark-mode .input:focus {
+  border-color: var(--primary-color);
+  background-color: rgba(79, 195, 247, 0.05);
 }
 
 .button {
@@ -555,8 +584,13 @@ body {
   margin-top: 40px;
   padding: 20px;
   text-align: center;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-top: 1px solid var(--border-color);
   position: relative;
+}
+
+html[data-theme="dark"] .footer,
+body.dark-mode .footer {
+  border-top-color: var(--border-color);
 }
 
 .footer::before {
