@@ -1,69 +1,77 @@
-# App Clima - Aplicativo de Previsão do Tempo
+# 🌦️ App Clima – Previsão do Tempo com Estilo e Inteligência
 
-Um aplicativo de previsão do tempo moderno e responsivo construído com React Native, oferecendo informações meteorológicas detalhadas e uma interface intuitiva.
+![React Native](https://img.shields.io/badge/React%20Native-Mobile%20App-61DAFB?style=for-the-badge&logo=react&logoColor=white)
+![Axios](https://img.shields.io/badge/Axios-HTTP%20Client-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
+![OpenWeather](https://img.shields.io/badge/OpenWeatherMap-API-007ACC?style=for-the-badge&logo=weather&logoColor=white)
+![MIT License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+
+Um aplicativo moderno e responsivo de **previsão do tempo**, construído com **React Native**, que oferece dados meteorológicos detalhados com uma interface fluida, intuitiva e com suporte a modo escuro.
 
 ![Screenshot do App](./screenshots/app-screenshot.png)
 
-## ✨ Funcionalidades
+---
 
-- **Informações detalhadas de clima:**
+## ✨ Funcionalidades Principais
 
+- 📍 **Geolocalização Automática**
+  - Detecta a localização do usuário em tempo real
+  - Exibe o clima atual baseado na posição
+
+- 🔎 **Busca por Cidade**
+  - Pesquisa manual com previsão detalhada
+  - Suporte a qualquer localidade global
+
+- ☀️ **Detalhes Climáticos**
   - Temperatura atual
   - Sensação térmica
-  - Umidade do ar
+  - Umidade relativa
   - Velocidade do vento
-  - Condições climáticas (ex: céu limpo, nublado)
+  - Descrição do clima (ex: nublado, limpo)
 
-- **Previsão do tempo:**
+- 📆 **Previsões Avançadas**
+  - Previsão por hora para as próximas 24h
+  - Previsão diária para 5 a 7 dias
 
-  - Previsão por hora para as próximas 24 horas
-  - Previsão diária para os próximos 5-7 dias
+- 🎨 **Interface Moderna**
+  - Modo claro/escuro com alternância rápida
+  - Transições suaves
+  - Suporte a pull-to-refresh
 
-- **Geolocalização:**
+---
 
-  - Detecção automática da localização do usuário
-  - Exibição do clima local baseado na posição atual
+## 🧰 Tecnologias Utilizadas
 
-- **Busca por cidade:**
+- **React Native** – Framework mobile nativo
+- **Axios** – Requisições HTTP
+- **OpenWeatherMap API** – Dados meteorológicos
+- **React Navigation** – Navegação entre telas
+- **React Native Geolocation Service** – Localização via GPS
+- **React Native Vector Icons** – Ícones de alta qualidade
 
-  - Pesquisa manual por cidade
-  - Exibição de informações detalhadas para qualquer localidade
-
-- **Interface:**
-  - Design moderno e responsivo
-  - Modo claro/escuro com alternância por botão
-  - Transições suaves entre estados
-  - Pull-to-refresh para atualizar dados
-
-## 🛠️ Tecnologias Utilizadas
-
-- **React Native**: Framework para desenvolvimento mobile
-- **Axios**: Cliente HTTP para consumo de API
-- **React Navigation**: Sistema de navegação entre telas
-- **React Native Vector Icons**: Biblioteca de ícones
-- **React Native Geolocation Service**: Acesso à localização do dispositivo
-- **OpenWeatherMap API**: Fonte de dados meteorológicos
+---
 
 ## 📱 Capturas de Tela
 
-<!-- Adicione capturas de tela do seu aplicativo aqui -->
+<!-- Adicione aqui suas capturas de tela atualizadas -->
+
+---
 
 ## 📦 Instalação e Execução
 
-### Pré-requisitos
+### ⚙️ Pré-requisitos
 
-- Node.js instalado (versão 14 ou superior)
-- JDK 11 ou superior
-- Android Studio (para desenvolvimento Android)
-- Xcode (para desenvolvimento iOS - apenas macOS)
+- Node.js (v14+)
+- JDK 11+
+- Android Studio (para Android)
+- Xcode (para iOS - macOS)
 - React Native CLI
 
-### Passos para instalação
+### 🚀 Passo a passo
 
 1. Clone o repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/app-clima.git
+git clone https://github.com/LuisCarlos01/Appclima.git
 cd app-clima
 ```
 
@@ -75,34 +83,37 @@ npm install
 
 3. Configure a API:
 
-   - Crie uma conta no [OpenWeatherMap](https://openweathermap.org/)
-   - Obtenha uma chave de API gratuita
-   - Abra o arquivo `src/services/weatherService.js`
-   - Substitua `YOUR_OPENWEATHERMAP_API_KEY` pela sua chave
+- Crie uma conta no [OpenWeatherMap](https://openweathermap.org/)
+- Copie sua chave da API
+- Edite `src/services/weatherService.js` e substitua:
 
-4. Execute o aplicativo:
+```js
+const API_KEY = 'YOUR_OPENWEATHERMAP_API_KEY';
+```
+
+4. Execute o app:
 
 Para Android:
-
 ```bash
 npx react-native run-android
 ```
 
 Para iOS:
-
 ```bash
 npx react-native run-ios
 ```
+
+---
 
 ## 🗂️ Estrutura do Projeto
 
 ```
 app-clima/
-├── android/               # Arquivos específicos do Android
-├── ios/                   # Arquivos específicos do iOS
-├── src/                   # Código fonte do aplicativo
-│   ├── assets/            # Imagens e outros recursos estáticos
-│   ├── components/        # Componentes reutilizáveis
+├── android/
+├── ios/
+├── src/
+│   ├── assets/
+│   ├── components/
 │   │   ├── Header.js
 │   │   ├── SearchBar.js
 │   │   ├── WeatherCard.js
@@ -110,35 +121,45 @@ app-clima/
 │   │   ├── DailyForecast.js
 │   │   ├── Loading.js
 │   │   └── ErrorView.js
-│   ├── screens/           # Telas do aplicativo
+│   ├── screens/
 │   │   └── HomeScreen.js
-│   ├── services/          # Serviços e integração com APIs
+│   ├── services/
 │   │   └── weatherService.js
-│   └── utils/             # Funções utilitárias
+│   └── utils/
 │       └── geolocation.js
-├── App.tsx                # Componente principal
-└── index.js               # Ponto de entrada do aplicativo
+├── App.tsx
+└── index.js
 ```
-
-## 📃 Licença
-
-Este projeto está licenciado sob a licença MIT - consulte o arquivo [LICENSE](LICENSE) para obter detalhes.
-
-## 👨‍💻 Autor
-
-Desenvolvido por [Luis Carlos](https://github.com/LuisCarlos01/Appclima)
-
-## 🙏 Créditos
-
-- [OpenWeatherMap](https://openweathermap.org/) pela API de dados meteorológicos
-- [Ionicons](https://ionicons.com/) pelos ícones utilizados
-- [React Native Community](https://reactnative.dev/community/overview) pelo suporte e recursos
 
 ---
 
-## 🚀 Próximos Passos
+## 🔐 Licença
 
-- Adicionar suporte para múltiplos idiomas
-- Implementar notificações para alertas meteorológicos
-- Adicionar gráficos para visualização de dados históricos
-- Melhorar acessibilidade
+Distribuído sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+## 👨‍💻 Desenvolvido por
+
+Feito com 💙 por **Luis Carlos**  
+[GitHub](https://github.com/LuisCarlos01) | [LinkedIn](https://www.linkedin.com/in/luizcarloss/)
+
+---
+
+## 🙌 Créditos
+
+- [OpenWeatherMap](https://openweathermap.org/)
+- [Ionicons](https://ionicons.com/)
+- [React Native Community](https://reactnative.dev/community/overview)
+
+---
+
+## 📈 Roadmap
+
+- 🌐 Suporte a múltiplos idiomas
+- 🔔 Notificações com alertas climáticos
+- 📊 Gráficos para dados históricos
+- ♿ Acessibilidade aprimorada
+```
+
+---
