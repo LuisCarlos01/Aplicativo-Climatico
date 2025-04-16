@@ -160,6 +160,3 @@ Feito com 💙 por **Luis Carlos**
 - 🔔 Notificações com alertas climáticos
 - 📊 Gráficos para dados históricos
 - ♿ Acessibilidade aprimorada
-```
-
----
